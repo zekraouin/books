@@ -1,0 +1,23 @@
+<div class="container">
+ <div class="row">
+  <div class="col-12 col-md-6">
+     <h2>Create New Author</h2>
+     <% if( typeof error!="undefined" ){ %>
+      <span class="alert alert-danger mb-3 mx-2"><%= error %></span>
+      <% } %>
+      <form action="/authors" method="post" class="form my-2 mx-2">
+        <div class="form-group">
+          <label for="name">Author Name:</label>
+          <input type="text" class="form-control" id="name" name="name" placeholder="Enter author name" required 
+          value="<% if( typeof author!="undefined" ){ %> <%= author.name %> <% } %> ">
+        </div>
+      
+        <input type="hidden" name="authenticity_token" value="">
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+
+  </div>
+
+ </div>
+</div>

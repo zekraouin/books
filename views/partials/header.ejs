@@ -1,0 +1,128 @@
+<header>
+
+    <nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">E-books</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/books">Books</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/books/create">Create a book</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/authors">Authors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/authors/create">Create an author</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0 navbar-nav">
+                <div class="container">
+                    <div class="searchInput">
+                        <input class="form-control mr-sm-2" id="searchInput" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0 mx-2" type="submit">Search</button>
+                        <div class="resultBox">
+                            <ul id="searchSuggestions" class="ui-autocomplete"></ul>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+            
+
+        </div>
+    </nav>
+</header>
+<style>
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000; /* Ensure the header is above other content */
+}
+body {
+  padding-top: 60px; 
+  background-color: #ededed;
+}
+/* Style for the result box */
+.resultBox {
+  position: relative; /* Ensure relative positioning for absolute positioning of suggestions */
+  width: 100%; /* Adjust width as needed */
+}
+
+/* Style for the search suggestions */
+.ui-autocomplete {
+  position: absolute; /* Position suggestions absolutely relative to the result box */
+  z-index: 1000; /* Ensure suggestions appear above other content */
+  width: 60%; /* Adjust width as needed */
+  max-height: 200px; /* Set maximum height to limit overflow */
+  overflow-y: auto; /* Enable vertical scrolling if needed */
+  list-style: none; /* Remove default list styling */
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margin */
+  border-top: none; /* Hide top border */
+  border-radius: 0 0 0.25rem 0.25rem; /* Add border radius to match input field */
+  background-color: #fff; /* Set background color */
+}
+
+/* Style for individual suggestion items */
+.ui-autocomplete li {
+  padding: 10px; /* Add padding */
+  cursor: pointer; /* Add pointer cursor */
+  border-bottom: 1px solid gray;
+}
+
+/* Style for selected suggestion item */
+.ui-autocomplete li.ui-state-focus {
+  background-color: #f0f0f0; /* Change background color when selected */
+}
+
+/* Style for search input field */
+#searchInput {
+  border-radius: 0.25rem 0.25rem 0 0; /* Match border radius to suggestions dropdown */
+}
+
+/* Style for search button */
+.btn-outline-success {
+  border-radius: 0 0.25rem 0.25rem 0; /* Match border radius to suggestions dropdown */
+}
+
+
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#searchInput').keyup(function() {
+        var searchQuery = $(this).val().trim();
+        if (searchQuery !== '') {
+            $.ajax({
+                type: 'GET',
+                url: '/authors/search', 
+                data: { query: searchQuery },
+                success: function(response) {
+                    var suggestions = response.suggestions;
+                            console.log(suggestions);
+
+                    var dropdownMenu = $('#searchSuggestions');
+                    
+                    dropdownMenu.empty(); 
+                    suggestions.forEach(function(suggestion) {
+                        dropdownMenu.append('<li class=""" >' + suggestion + '</li>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching search suggestions:', error);
+                }
+            });
+        } else {
+            // Clear the autocomplete dropdown if the search query is empty
+            $('#searchSuggestions').empty();
+        }
+    });
+});
+</script>
