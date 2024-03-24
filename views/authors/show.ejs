@@ -1,0 +1,23 @@
+<h1>Authors Page Details</h1>
+
+<div class="container">
+  <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title"><%= author.name %></h5>
+                    <span class="text-muted"><%= author.createdAt.toISOString() %></span>
+                
+                </div>
+                <div class="card-footer">
+                    <a href="/authors/<%= author.slug %>/edit" class="btn btn-info mx-2 mb-3">edit</a>
+                    <form action="/authors/<%=author.id %>/delete"  method="post" class="form form-inline">                   
+                         <button type="submit" class="btn btn-danger mx-2 mb-3">delete</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+      
+  </div>
+</div>
